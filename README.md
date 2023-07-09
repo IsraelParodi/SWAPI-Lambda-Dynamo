@@ -1,15 +1,16 @@
 # Prueba Softtek - AWS Node.js Typescript
 
 Para correr el servicio
+Node version: v18.16.0
 
 - npm i
 - serverless deploy (para desplegar en AWS)
 - serverless offline (para correrlo en local)
+- npm run test (testeo simple con jest)
 
 Crear planeta customizado
-https://lwlh4mbpva.execute-api.us-east-1.amazonaws.com/dev/create-planet
-
 METHOD: POST
+https://lwlh4mbpva.execute-api.us-east-1.amazonaws.com/dev/create-planet
 
 BODY:
 
@@ -26,9 +27,9 @@ BODY:
     }
 
 Obtener planetas DynamoDB
+METHOD: GET
 https://lwlh4mbpva.execute-api.us-east-1.amazonaws.com/dev/get-planets-db
 
 Obtener planeta (Integración SWAPI)
-https://lwlh4mbpva.execute-api.us-east-1.amazonaws.com/dev/get-planets-api/1
-
 METHOD: GET
+https://lwlh4mbpva.execute-api.us-east-1.amazonaws.com/dev/get-planets-api/1
