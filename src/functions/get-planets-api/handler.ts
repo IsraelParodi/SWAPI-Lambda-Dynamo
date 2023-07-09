@@ -1,4 +1,7 @@
-import { formatJSONResponse } from "@libs/api-gateway";
+import {
+  formatJSONResponse,
+  formatJSONResponseBadRequest,
+} from "@libs/api-gateway";
 import { middyfy } from "@libs/lambda";
 
 import { PlanetService } from "../../services/planets";
@@ -13,7 +16,7 @@ const getPlanetsApi = async (event) => {
       input: planetsData,
     });
   } catch (error) {
-    throw Error(error);
+    throw formatJSONResponseBadRequest(error);
   }
 };
 

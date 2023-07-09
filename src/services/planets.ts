@@ -2,6 +2,7 @@ import { transformString } from "../utils/utils";
 import { IPlanet } from "../interfaces/IPlanet";
 import DynamoDBConnection from "../database/dynamodb";
 import * as AWS from "aws-sdk";
+AWS.config.update({ region: "us-east-1" });
 
 const { v4 } = require("uuid");
 const https = require("https");
@@ -11,10 +12,9 @@ export class PlanetService {
   constructor() {}
 
   static async getPlanets(planetId: string) {
-    const translatedData = {} as IPlanet;
     try {
+      const translatedData = {} as IPlanet;
       const planet = (await this.handlePlanets(planetId)) as IPlanet;
-      console.log(planet);
       for (const key in planet) {
         const translatedKey = await translate
           .translateText({
@@ -26,11 +26,10 @@ export class PlanetService {
         const cleanString = transformString(translatedKey.TranslatedText);
         translatedData[cleanString] = planet[key];
       }
+      return { statusCode: 200, body: translatedData };
     } catch (error) {
       throw Error(error);
     }
-
-    return { statusCode: 200, body: translatedData };
   }
 
   static async createPlanet(planet: IPlanet) {
@@ -46,11 +45,11 @@ export class PlanetService {
           Item: planet,
         })
         .promise();
+
+      return { statusCode: 201, body: planet };
     } catch (error) {
       throw Error(error);
     }
-
-    return { statusCode: 201, body: planet };
   }
 
   static async getPlanetsDb() {
@@ -63,6 +62,7 @@ export class PlanetService {
       throw Error(error);
     }
   }
+
   static async handlePlanets(planetId: string) {
     return new Promise((resolve, reject) => {
       const req = https.get(
@@ -70,22 +70,18 @@ export class PlanetService {
         (res) => {
           let data = "";
 
-          // called when a data chunk is received.
           res.on("data", (chunk) => {
             data += chunk;
           });
 
-          // called when the complete response is received.
           res.on("end", () => {
             const planet = JSON.parse(data);
-            console.log(planet);
             resolve(planet);
           });
         }
       );
 
       req.on("error", (err) => {
-        console.log("Error: ", err.message);
         reject(err);
       });
 

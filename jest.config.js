@@ -6,7 +6,7 @@ module.exports = {
     "^.+\\.tsx?$": "babel-jest",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
-  moduleDirectories: ["node_modules", "<rootDir>/src"],
+  moduleDirectories: ["node_modules", "<rootDir>/src", "src"],
   moduleNameMapper: {
     "#(.*)": "<rootDir>/node_modules/$1",
     "@libs/(.*)": "<rootDir>",
